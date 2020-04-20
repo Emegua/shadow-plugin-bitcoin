@@ -3,7 +3,7 @@ This repository holds a Shadow plug-in that runs the Bitcoin Satoshi reference c
 The steps provided below will give you some guidance to setup Bitcoind plugin without any segfault in ubunutu 18.04. 
 
 ### 0. Make sure that the Shadow simulator is sucessfully installed. 
-      If you haven't done that already, you may check [Shadow'a installation manual](https://github.com/shadow/shadow/blob/master/docs/1.1-Shadow.md) 
+If you haven't done that already, you may check [Shadow'a installation manual](https://github.com/shadow/shadow/blob/master/docs/1.1-Shadow.md) 
 ### 1. Clone the bitcoin plugin repository, setup basic settings. 
 ```
 cd ~/
