@@ -1,5 +1,17 @@
+# :bangbang: v0.16.0 version Bitcoind shadow plugin setup from clean slate :bangbang:
 # :bangbang: ARCHIVAL NOTICE - 2020-02-20 :bangbang:
 
+To give clean-slate steps from newly installed Ubuntu 18.04, I set an Ubuntu 18.04 virtual machine.
+These steps will give you some guidance to setup Bitcoind plugin without any segfault.
+# 0. Make sure that gthe Shadow plugin repository, setup basic settings
+# 1. Clone the bitcoin plugin repository, setup basic settings.
+```
+cd ~/
+git clone https://github.com/shadow/shadow-plugin-bitcoin
+cd shadow-plugin-bitcoin
+mkdir build;cd build
+sudo apt-get install -y autoconf libtool libboost-all-dev libssl-dev libevent-dev
+```
 Unfortunately, this project has not been properly maintained for a long time. This has resulted in users experiencing numerous bugs that we don't have the time to fix. Because we are prioritizing development effort elsewhere, we have decided to archive this repository: **no further development updates will be posted here**.
 
 **Use at your own risk**; if it breaks, you get to keep both pieces.
