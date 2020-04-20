@@ -1,5 +1,5 @@
 ## v0.16.0 version Bitcoind shadow plugin setup from clean slate 
-Shadow-Plugin-bitcoin repository holds a Shadow plug-in that runs the Bitcoin Satoshi reference client. It can be used to run private Bitcoin networks of clients and servers on a single machine using the Shadow discrete-event network simulator. Since the current version of **Shadow-Plugin-bitcoin** has unresolved segmentation fault errors on recent versions of Ubuntu, for example 16.04 and 18.04 LTS, the repository is already archived by the owners or the repo. 
+[**Shadow-Plugin-bitcoin**](https://github.com/shadow/shadow-plugin-bitcoin) repository holds a Shadow plug-in that runs the Bitcoin Satoshi reference client. It can be used to run private Bitcoin networks of clients and servers on a single machine using the Shadow discrete-event network simulator. Since the current version of **Shadow-Plugin-bitcoin** has unresolved segmentation fault errors on recent versions of Ubuntu, for example 16.04 and 18.04 LTS, the repository is already archived by the owners or the repo. 
 The steps provided below will give you some guidance to setup Bitcoind plugin without any segfault in ubunutu 18.04. 
 
 ### 0. Make sure that the Shadow simulator is sucessfully installed. 
@@ -20,7 +20,7 @@ wget https://www.openssl.org/source/openssl-1.1.0h.tar.gz
 tar xaf openssl-1.1.0h.tar.gz
 cd openssl-1.1.0h
 ```
-The following command depends on the location where you want to install. If you install it in a different location than /home/${USER}/.shadow, make sure you change the value for prefix accordingly. 
+The following command depends on the location where you want to install openssl-1.1.0h. If you install it in a different location than /home/${USER}/.shadow, make sure you change the value for prefix accordingly. 
 ```
 ./config --prefix=/home/${USER}/.shadow shared threads enable-ec_nistp_64_gcc_128 -fPIC
 make depend
@@ -61,7 +61,7 @@ make install
 cd ..
 ```
 ### 7. Remove line 23: in ~/shadow-plugin-bitcoin/resource/example.xml, since asn should be a positive value in the latest Shadow.
-remove line 23: <data key="d6">0</data>
+Remove line 23: <data key="d6"\>0</data\>
 ### 8. Running an experiment
 ```
 mkdir run
