@@ -70,7 +70,7 @@ mkdir -p data/bcdnode1
 mkdir -p data/bcdnode2
 shadow -d datadir ../resource/example.xml
 ```
-### Reference
+### References
 
 https://github.com/shadow/shadow-plugin-bitcoin
 
