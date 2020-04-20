@@ -30,8 +30,8 @@ cd ..``
 ```
 This installs the older verison of openssl inside the directory where we installed shadow. 
 ### 3. Change CMakeLists.txt in shadow-plugin-bitcoin directory.
-You may use any text editor to make the change. 
 240: SET(PIE_FLAGS "-shared -fPIC")
+
 261: SET(BITCOIN_LDFLAGS "-pthread -Wl,-z,relro -Wl,-z,now")
 ### 4. Based on the Shadow directory, modify SHADOW_ROOT in CMakeLists.txt
 ex) 23: set(SHADOW_ROOT "$ENV{HOME}/blockchain-sim/Install")
