@@ -1,10 +1,10 @@
-# :bangbang: v0.16.0 version Bitcoind shadow plugin setup from clean slate :bangbang:
-# :bangbang: ARCHIVAL NOTICE - 2020-02-20 :bangbang:
+## v0.16.0 version Bitcoind shadow plugin setup from clean slate 
+This repository holds a Shadow plug-in that runs the Bitcoin Satoshi reference client. It can be used to run private Bitcoin networks of clients and servers on a single machine using the Shadow discrete-event network simulator. Since the current version of **Shadow-Plugin-bitcoin** has unresolved segmentation fault errors on recent versions of Ubuntu, for example 16.04 and 18.04 LTS, the repository is already archived by the owners or the repo. 
+The steps provided below will give you some guidance to setup Bitcoind plugin without any segfault in ubunutu 18.04. 
 
-To give clean-slate steps from newly installed Ubuntu 18.04, I set an Ubuntu 18.04 virtual machine.
-These steps will give you some guidance to setup Bitcoind plugin without any segfault.
-# 0. Make sure that gthe Shadow plugin repository, setup basic settings
-# 1. Clone the bitcoin plugin repository, setup basic settings.
+### 0. Make sure that the Shadow simulator is sucessfully installed. 
+      If you haven't done that already, you may check [Shadow'a installation manual](https://github.com/shadow/shadow/blob/master/docs/1.1-Shadow.md) 
+### 1. Clone the bitcoin plugin repository, setup basic settings. 
 ```
 cd ~/
 git clone https://github.com/shadow/shadow-plugin-bitcoin
@@ -12,118 +12,66 @@ cd shadow-plugin-bitcoin
 mkdir build;cd build
 sudo apt-get install -y autoconf libtool libboost-all-dev libssl-dev libevent-dev
 ```
-Unfortunately, this project has not been properly maintained for a long time. This has resulted in users experiencing numerous bugs that we don't have the time to fix. Because we are prioritizing development effort elsewhere, we have decided to archive this repository: **no further development updates will be posted here**.
-
-**Use at your own risk**; if it breaks, you get to keep both pieces.
-
------
-
-
-# Shadow-plugin-bitcoin
-
-This repository holds a Shadow plug-in that runs the Bitcoin Satoshi reference client.
-It can be used to run private Bitcoin networks of clients and servers on a single 
-machine using the Shadow discrete-event network simulator.
-
-
-By leveraging recent version of shadow, you can simplify the implementation of
-Shadow plug-in for Bitcoin client. The detailed steps are summarized below.
-
-
-# Dependencies
-
-Please use Ubuntu 14.04.05 LTS. We confirmed the unresolved segmentation fault errors on Ubuntu 16.04 LTS.
-
-You will need to install Shadow and its dependencies, using latest Shadow version (v1.12.0).
-See https://github.com/shadow/shadow/wiki/1.1-Shadow.
-
-Please install the glib manually before installing the shadow.
+### 2. Install older version openssl
 ```
-wget http://ftp.gnome.org/pub/gnome/sources/glib/2.42/glib-2.42.1.tar.xz
-tar xaf glib-2.42.1.tar.xz
-cd glib-2.42.1
-./configure --prefix=~/.shadow
+cd ~/
+wget https://www.openssl.org/source/openssl-1.1.0h.tar.gz
+tar xaf openssl-1.1.0h.tar.gz
+cd openssl-1.1.0h
+```
+The following command depends on the location where you installed Shadow. If you install it in a different location than /home/${USER}/.shadow, make sure you change the value for prefix accordingly. 
+```
+./config --prefix=/home/${USER}/.shadow shared threads enable-ec_nistp_64_gcc_128 -fPIC
+make depend
 make
-make install
+make install_sw
+cd ..``
 ```
-
-# Setup plug-in and custom build requirements
-
-After installing the shadow simulator, you will need to install Shadow plug-in for Bitcoin.
-We will build from the `build` directory:
-
+### 3. Change CMakeLists.txt in shadow-plugin-bitcoin directory.
+You may use any text editor to make the change. 
+240: SET(PIE_FLAGS "-shared -fPIC")
+261: SET(BITCOIN_LDFLAGS "-pthread -Wl,-z,relro -Wl,-z,now")
+### 4. Based on the Shadow directory, modify SHADOW_ROOT in CMakeLists.txt
+ex) 23: set(SHADOW_ROOT "$ENV{HOME}/blockchain-sim/Install")
+### 5. Set bitcoind with corresponding openssl library
 ```
-git clone https://github.com/shadow/shadow-plugin-bitcoin.git
-cd shadow-plugin-bitcoin
-mkdir build; cd build
-```
-
-You will also need to clone and customize the recent bitcoin sources (v0.16.0).
-
-```
-sudo apt-get install -y autoconf libtool libboost-all-dev libssl-dev libevent-dev
+cd ~/shadow-plugin-bitcoin/build
 git clone https://github.com/bitcoin/bitcoin.git
 cd bitcoin
 git checkout v0.16.0
 ./autogen.sh
-./configure --disable-wallet
+```
+The following command depends on the location where you installed Shadow. If you install it in a different location than /home/${USER}/.shadow, make sure you some changes accordingly.  
+```
+PKG_CONFIG_PATH=/home/${USER}/.shadow/lib/pkgconfig LDFLAGS=-L/home/${USER}/.shadow/lib CFLAGS=-I/home/${USER}/.shadow/include ./configure --prefix=/home/${USER}/.shadow --disable-wallet
+```
+```
 make -C src obj/build.h
 make -C src/secp256k1 src/ecmult_static_context.h
 git apply ../../DisableSanityCheck.patch
 cd ..
 ```
-
-Now we are ready to build the actual Shadow plug-in using cmake.
-
+### 6. Compile - build the actual Shadow plug-in using cmake.
 ```
 cmake ../
-make -jN
+make -j8
 make install
 cd ..
 ```
-
-Replace `N` with the number of cores you want to use for a parallel build.
-
-
-# Running an experiment
-
-To run the most basic experiment, run as follows.
-
+### 7. Remove line 23: in ~/shadow-plugin-bitcoin/resource/example.xml, since asn should be a positive value in the latest Shadow.
+remove line 23: <data key="d6">0</data>
+### 8. Running an experiment
 ```
 mkdir run
 cd run
 mkdir -p data/bcdnode1
 mkdir -p data/bcdnode2
-shadow ../resource/example.xml
-cd ..
+shadow -d datadir ../resource/example.xml
 ```
+### Reference
 
-To run a more large scale example (e.g. 1000 bitcoin nodes), run as follows.
-Python script will automatically generate a necessary network config file of shadow at `../resource/example_multiple_generated.xml`.
+https://github.com/shadow/shadow-plugin-bitcoin
 
-```
-mkdir run
-cd run
-python ../tools/run_multinode_experiment.py --nodenum 100 --workernum 5
-cd ..
-```
+https://github.com/shadow/shadow-plugin-bitcoin/wiki#openssl
 
-
-# Additional Links
-
-Setup and Usage Instructions:
-  + https://github.com/shadow/shadow-plugin-bitcoin/wiki
-
-Shadow-Bitcoin: Scalable Simulation via Direct Execution of Multi-threaded Applications [(tech report)](https://cs.umd.edu/~amiller/shadow-bitcoin.pdf)
-
-More Information about Shadow:
-  + https://shadow.github.io
-  + https://github.com/shadow/shadow
-
-More Information about Bitcoin:
-  + https://www.bitcoin.org
-  + https://github.com/bitcoin/bitcoin
-
-# Contributing
-
-Contributions can be made by submitting pull requests via GitHub.
+https://github.com/shadow/shadow-plugin-bitcoin/wiki#bitcoin
