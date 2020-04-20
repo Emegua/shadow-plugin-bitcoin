@@ -26,7 +26,7 @@ The following command depends on the location where you want to install openssl-
 make depend
 make
 make install_sw
-cd ..``
+cd ..
 ```
 This installs the older verison of openssl inside the directory where we installed shadow. 
 ### 3. Change CMakeLists.txt in shadow-plugin-bitcoin directory.
