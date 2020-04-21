@@ -46,6 +46,7 @@ curl https://raw.githubusercontent.com/Emegua/shadow-plugin-bitcoin/master/updat
 ex) 23: set(SHADOW_ROOT "$ENV{HOME}/blockchain-sim/.shadow")
 
 What the patch basically does is edit somelines in CMakeLists.txt file as follows.
+
 240: ~~SET(PIE_FLAGS "-fPIE")~~
 
 240: SET(PIE_FLAGS "-shared -fPIC")
