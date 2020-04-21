@@ -1,0 +1,43 @@
+From 4fa5170b1fd4f60b003dd55afd3cb4b7372ee605 Mon Sep 17 00:00:00 2001
+From: Yonatan <emeguag@gmail.com>
+Date: Tue, 21 Apr 2020 13:10:19 +0900
+Subject: [PATCH] CMakeLists.txt modified
+
+---
+ CMakeLists.txt | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 7f3631b..cdea2bc 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -20,7 +20,7 @@ get_filename_component(BITCOIN_ROOT_DIR "${CMAKE_SOURCE_DIR}/build/bitcoin" ABSO
+ 
+ ## we need to know where shadow is installed
+ if("${SHADOW_ROOT}" STREQUAL "")
+-    set(SHADOW_ROOT "$ENV{HOME}/.shadow")
++    set(SHADOW_ROOT "$ENV{HOME}/Install")
+ endif()
+ if(EXISTS "${SHADOW_ROOT}")
+     message(STATUS "SHADOW_ROOT = ${SHADOW_ROOT}")
+@@ -237,7 +237,7 @@ SET(BITCOIN_INCLUDES "${BOOST_CPPFLAGS} ${LEVELDB_CPPFLAGS} -I${BITCOIN_ROOT_DIR
+ SET(EVENT_PTHREADS_CFLAGS "-pthread")
+ SET(CPPFLAGS "-DHAVE_BUILD_INFO -D__STDC_FORMAT_MACROS")
+ SET(AM_CXXFLAGS "-Wstack-protector -fstack-protector-all")
+-SET(PIE_FLAGS "-fPIE")
++SET(PIE_FLAGS "-shared -fPIC")
+ # SET(CXXFLAGS "-g -O2 -Wall -Wextra -Wformat -Wvla -Wformat-security -Wno-unused-parameter")
+ SET(CXXFLAGS "-g -Wall -Wextra -Wformat -Wvla -Wformat-security -Wno-unused-parameter")
+ SET(LIBBITCOIN_SERVER_CPPFLAGS "${GCC_DEFS} ${AM_CPPFLAGS} ${BITCOIN_INCLUDES} ${EVENT_PTHREADS_CFLAGS} ${CPPFLAGS} ${AM_CXXFLAGS} ${PIE_FLAGS} ${CXXFLAGS}")
+@@ -258,7 +258,7 @@ set_target_properties(LIBLEVELDB_SSE42 PROPERTIES COMPILE_FLAGS "${GCC_DEFS} ${C
+ set_target_properties(LIBMEMENV PROPERTIES COMPILE_FLAGS "${GCC_DEFS} ${CPPFLAGS} ${CXXFLAGS} ${AM_CPPFLAGS} ${LEVELDB_CPPFLAGS_INT} ${LEVELDB_CPPFLAGS} ${AM_CXXFLAGS} ${PIE_FLAGS}")
+ set_target_properties(LIBSECP256K1 PROPERTIES COMPILE_FLAGS "${GCC_DEFS} ${LIBSECP256K1_INC} ${LIBSECP256K1_CFLAGS} -DSECP256K1_BUILD -fPIC -DPIC")
+ 
+-SET(BITCOIN_LDFLAGS "-pthread -Wl,-z,relro -Wl,-z,now -pie")
++SET(BITCOIN_LDFLAGS "-pthread -Wl,-z,relro -Wl,-z,now")
+ 
+ # add_executable(BITCOIND ${BITCOIN_ROOT_DIR}/src/bitcoind.cpp)
+ add_shadow_plugin(BITCOIND ${BITCOIN_ROOT_DIR}/src/bitcoind.cpp)
+-- 
+2.17.1
+
