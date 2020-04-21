@@ -29,12 +29,28 @@ make install_sw
 cd ..
 ```
 This installs the older verison of openssl inside the directory where we installed shadow. 
-### 3. Change CMakeLists.txt in shadow-plugin-bitcoin directory.
+### 3. Change CMakeLists.txt in shadow-plugin-bitcoin directory, and based on the shadow direcotry, modify SHADOW_ROOT in CMakeLists.txt
+This can be made by applying a patch as shown below.
+#### 3.1. If your shadow is installed in the $HOME/Install directory: 
+```
+cd ~/shadow-plugin-bitcoin
+curl https://raw.githubusercontent.com/Emegua/shadow-plugin-bitcoin/master/update_CMakeLists.patch | git apply
+```
+#### 3.2. If your shadow is installed in the $HOME/.shadow directory:
+```
+cd ~/shadow-plugin-bitcoin
+curl https://raw.githubusercontent.com/Emegua/shadow-plugin-bitcoin/master/update_CMakeLists_shadow.patch | git apply
+```
+#### 3.3. If your shadow is installed in any other directory, you may use step 3.2, but you may need to manually modify SHADOW_ROOT in CmakeLists.txt as shown below.
+ex) 23: set(SHADOW_ROOT "$ENV{HOME}/blockchain-sim/.shadow")
+
+What the patch basically does is edit somelines in CMakeLists.txt file as follows.
+
 240: SET(PIE_FLAGS "-shared -fPIC")
 
 261: SET(BITCOIN_LDFLAGS "-pthread -Wl,-z,relro -Wl,-z,now")
-### 4. Based on the Shadow directory, modify SHADOW_ROOT in CMakeLists.txt
-ex) 23: set(SHADOW_ROOT "$ENV{HOME}/blockchain-sim/Install")
+
+ex) 23: set(SHADOW_ROOT "$ENV{HOME}/Install")
 ### 5. Set bitcoind with corresponding openssl library
 ```
 cd ~/shadow-plugin-bitcoin/build
@@ -43,9 +59,13 @@ cd bitcoin
 git checkout v0.16.0
 ./autogen.sh
 ```
-The following command depends on the location where you installed Shadow and openssl. If you install it in a different location than /home/${USER}/.shadow, make sure you some changes accordingly.  
+The following command depends on the location where you installed Shadow and openssl. If you install it in a different location than /home/${USER}/.shadow, make sure you make some changes accordingly.  
 ```
 PKG_CONFIG_PATH=/home/${USER}/.shadow/lib/pkgconfig LDFLAGS=-L/home/${USER}/.shadow/lib CFLAGS=-I/home/${USER}/.shadow/include ./configure --prefix=/home/${USER}/.shadow --disable-wallet
+```
+For example, if shadow is installed in $HOME/Install direcotry instead of /home/${USER}/.shadow, you can use the following command:
+```
+PKG_CONFIG_PATH=/home/${USER}/Install/lib/pkgconfig LDFLAGS=-L/home/${USER}/Install/lib CFLAGS=-I/home/${USER}/Install/include ./configure --prefix=/home/${USER}/Install --disable-wallet
 ```
 ```
 make -C src obj/build.h
@@ -61,7 +81,9 @@ make install
 cd ..
 ```
 ### 7. Remove line 23: in ~/shadow-plugin-bitcoin/resource/example.xml, since asn should be a positive value in the latest Shadow.
-Remove line 23: <data key="d6"\>0</data\>
+```
+curl https://raw.githubusercontent.com/Emegua/shadow-plugin-bitcoin/master/updateExampleXml.patch | git apply
+```
 ### 8. Running an experiment
 ```
 mkdir run
