@@ -1,6 +1,7 @@
 # V0.16.0 version Bitcoind shadow plugin setup from clean slate 
 [**Shadow-Plugin-bitcoin**](https://github.com/shadow/shadow-plugin-bitcoin) repository holds a Shadow plug-in that runs the Bitcoin Satoshi reference client. It can be used to run private Bitcoin networks of clients and servers on a single machine using the Shadow discrete-event network simulator. Since the current version of **Shadow-Plugin-bitcoin** has unresolved segmentation fault errors on recent versions of Ubuntu, for example 16.04 and 18.04 LTS, the repository is already archived by the owners or the repo. 
-The steps provided below will give you some guidance to setup Bitcoind plugin without any segfault in ubunutu 18.04. 
+
+**The steps provided below will give you some guidance to setup Bitcoind plugin without any segfault in ubunutu 18.04.**
 
 ### 0. Make sure that the Shadow simulator is sucessfully installed. 
 If you haven't done that already, you may check [Shadow'a installation manual](https://github.com/shadow/shadow/blob/master/docs/1.1-Shadow.md) 
