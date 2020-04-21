@@ -1,0 +1,25 @@
+From 889abd75294ecfbff1359d3caacac2a0bc50dd6f Mon Sep 17 00:00:00 2001
+From: Yonatan <emeguag@gmail.com>
+Date: Tue, 21 Apr 2020 13:29:39 +0900
+Subject: [PATCH] Example.xml modified
+
+---
+ resource/example.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/resource/example.xml b/resource/example.xml
+index 80172bf..724d470 100644
+--- a/resource/example.xml
++++ b/resource/example.xml
+@@ -20,7 +20,7 @@
+                  <data key="d3">10000020000040</data>
+                  <data key="d4">10000240</data>
+                  <data key="d5">net</data>
+-                 <data key="d6">0</data>
++                 
+                </node>
+                <edge source="poi-1" target="poi-1">
+                  <data key="d7">50.0</data>
+-- 
+2.17.1
+
