@@ -56,7 +56,7 @@ What the patch basically does is edit somelines in CMakeLists.txt file as follow
 261: SET(BITCOIN_LDFLAGS "-pthread -Wl,-z,relro -Wl,-z,now")
 
 ex) 23: set(SHADOW_ROOT "$ENV{HOME}/Install")
-### 5. Set bitcoind with corresponding openssl library
+### 4. Set bitcoind with corresponding openssl library
 ```
 cd ~/shadow-plugin-bitcoin/build
 git clone https://github.com/bitcoin/bitcoin.git
@@ -78,18 +78,18 @@ make -C src/secp256k1 src/ecmult_static_context.h
 git apply ../../DisableSanityCheck.patch
 cd ..
 ```
-### 6. Compile - build the actual Shadow plug-in using cmake.
+### 5. Compile - build the actual Shadow plug-in using cmake.
 ```
 cmake ../
 make -j8
 make install
 cd ..
 ```
-### 7. Remove line 23: in ~/shadow-plugin-bitcoin/resource/example.xml, since asn should be a positive value in the latest Shadow.
+### 6. Remove line 23: in ~/shadow-plugin-bitcoin/resource/example.xml, since asn should be a positive value in the latest Shadow.
 ```
 curl https://raw.githubusercontent.com/Emegua/shadow-plugin-bitcoin/master/updateExampleXml.patch | git apply
 ```
-### 8. Run an experiment
+### 7. Run an experiment
 ```
 mkdir run
 cd run
